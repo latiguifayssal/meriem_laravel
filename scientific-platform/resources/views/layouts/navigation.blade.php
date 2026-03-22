@@ -21,8 +21,11 @@
                         </x-nav-link>
                     @endif
                     @if (Auth::user()->isAuthor())
-                        <x-nav-link :href="route('author.dashboard')" :active="request()->routeIs('author.*')">
+                        <x-nav-link :href="route('author.dashboard')" :active="request()->routeIs('author.dashboard')">
                             {{ __('Author') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('author.documents.index')" :active="request()->routeIs('author.documents.*')">
+                            {{ __('Documents') }}
                         </x-nav-link>
                     @endif
                     @if (Auth::user()->isReviewer())
@@ -91,8 +94,11 @@
                 </x-responsive-nav-link>
             @endif
             @if (Auth::user()->isAuthor())
-                <x-responsive-nav-link :href="route('author.dashboard')" :active="request()->routeIs('author.*')">
+                <x-responsive-nav-link :href="route('author.dashboard')" :active="request()->routeIs('author.dashboard')">
                     {{ __('Author') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('author.documents.index')" :active="request()->routeIs('author.documents.*')">
+                    {{ __('Documents') }}
                 </x-responsive-nav-link>
             @endif
             @if (Auth::user()->isReviewer())

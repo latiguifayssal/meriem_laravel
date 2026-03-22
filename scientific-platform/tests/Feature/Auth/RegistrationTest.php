@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Enums\FieldOfStudy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -21,6 +22,7 @@ class RegistrationTest extends TestCase
         $response = $this->post('/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'field_of_study' => FieldOfStudy::Humanities->value,
             'password' => 'password',
             'password_confirmation' => 'password',
         ]);

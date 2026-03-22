@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,8 @@ Route::middleware(['auth', 'verified', 'isAuthor'])->prefix('author')->name('aut
     Route::get('/dashboard', function () {
         return view('author.dashboard');
     })->name('dashboard');
+
+    Route::resource('documents', DocumentController::class);
 });
 
 Route::middleware(['auth', 'verified', 'isReviewer'])->prefix('reviewer')->name('reviewer.')->group(function () {

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\FieldOfStudy;
 use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -30,6 +31,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'role' => UserRole::Author,
+            'field_of_study' => fake()->randomElement(FieldOfStudy::cases()),
             'remember_token' => Str::random(10),
         ];
     }

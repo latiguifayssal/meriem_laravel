@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\FieldOfStudy;
 use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -20,6 +21,7 @@ class AuthorUserSeeder extends Seeder
                 'name' => 'Test Author',
                 'password' => Hash::make(config('scientific-platform.author_password')),
                 'role' => UserRole::Author,
+                'field_of_study' => FieldOfStudy::BiologicalSciences,
                 'email_verified_at' => now(),
             ]
         );

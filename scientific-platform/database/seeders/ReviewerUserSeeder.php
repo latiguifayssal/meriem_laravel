@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\FieldOfStudy;
 use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -20,6 +21,7 @@ class ReviewerUserSeeder extends Seeder
                 'name' => 'Test Reviewer',
                 'password' => Hash::make(config('scientific-platform.reviewer_password')),
                 'role' => UserRole::Reviewer,
+                'field_of_study' => FieldOfStudy::MedicineHealth,
                 'email_verified_at' => now(),
             ]
         );
