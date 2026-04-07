@@ -6,6 +6,7 @@ use App\Enums\FieldOfStudy;
 use App\Enums\UserRole;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -24,6 +25,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'field_of_study',
     ];
 
     /**
@@ -69,5 +71,20 @@ class User extends Authenticatable
     public function documents(): HasMany
     {
         return $this->hasMany(Document::class);
+    }
+
+    public function reviewedDocuments(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Document::class,
+            'document_reviewer',
+            'reviewer_id',
+            'document_id'
+        );
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'reviewer_id');
     }
 }

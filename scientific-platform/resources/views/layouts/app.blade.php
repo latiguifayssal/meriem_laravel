@@ -14,21 +14,21 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+    <body class="font-sans antialiased text-slate-800">
+        <div class="min-h-screen bg-slate-50">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
             @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <header class="border-b border-slate-200/80 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/75">
+                    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>
             @endif
 
             <!-- Page Content -->
-            <main>
+            <main class="pb-16">
                 {{ $slot }}
             </main>
         </div>

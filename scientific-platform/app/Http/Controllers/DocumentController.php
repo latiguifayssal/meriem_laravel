@@ -17,10 +17,13 @@ class DocumentController extends Controller
     {
         $this->authorize('viewAny', Document::class);
 
+        $q = $request->query('q');
         $documents = $request->user()
             ->documents()
+            ->when($q, fn ($builder) => $builder->where('title', 'like', '%'.$q.'%'))
             ->latest()
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         return view('author.documents.index', compact('documents'));
     }
@@ -54,12 +57,20 @@ class DocumentController extends Controller
     {
         $this->authorize('view', $document);
 
+        $document->load([
+            'reviews' => fn ($query) => $query->with('reviewer')->latest(),
+        ]);
+
         return view('author.documents.show', compact('document'));
     }
 
     public function edit(Document $document): View
     {
         $this->authorize('update', $document);
+
+        $document->load([
+            'reviews' => fn ($query) => $query->with('reviewer')->latest(),
+        ]);
 
         return view('author.documents.edit', compact('document'));
     }
@@ -74,6 +85,9 @@ class DocumentController extends Controller
             }
             $data['file_path'] = $request->file('file')->store('documents', 'public');
         }
+
+        $data['status'] = DocumentStatus::UnderReview;
+        $data['published_at'] = null;
 
         $document->update($data);
 

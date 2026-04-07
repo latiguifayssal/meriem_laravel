@@ -83,21 +83,17 @@
 <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md">
 <div class="flex justify-between items-center px-8 py-4 w-full max-w-screen-2xl mx-auto">
 <div class="text-2xl font-serif italic text-blue-900">The Editorial Scholar</div>
-<!-- Desktop Links -->
-<div class="hidden md:flex items-center space-x-12">
-<a class="text-blue-900 font-bold border-b-2 border-blue-900 font-serif font-medium tracking-tight ease-in-out duration-300" href="#">Browse</a>
-<a class="text-slate-500 font-medium font-serif font-medium tracking-tight hover:text-blue-700 transition-colors ease-in-out duration-300" href="#">Journals</a>
-<a class="text-slate-500 font-medium font-serif font-medium tracking-tight hover:text-blue-700 transition-colors ease-in-out duration-300" href="#">Guidelines</a>
-<a class="text-slate-500 font-medium font-serif font-medium tracking-tight hover:text-blue-700 transition-colors ease-in-out duration-300" href="#">About</a>
+<!-- Desktop: jump to published list -->
+<div class="hidden md:flex items-center">
+<a class="text-blue-900 font-bold border-b-2 border-blue-900 font-serif font-medium tracking-tight ease-in-out duration-300" href="#published-research">{{ __('Browse') }}</a>
 </div>
 <div class="flex items-center space-x-6">
-<button type="button" class="text-slate-500 material-symbols-outlined" aria-label="{{ __('Search') }}">search</button>
 @auth
     <a href="{{ url('/dashboard') }}" class="inline-flex items-center justify-center bg-primary text-on-primary px-6 py-2.5 rounded-md font-label text-sm font-semibold tracking-wide hover:opacity-90 transition-opacity">
         {{ __('Dashboard') }}
     </a>
 @else
-    @if (Route::has('login'))
+    @if (\Illuminate\Support\Facades\Route::has('login'))
     <a href="{{ route('login') }}" class="inline-flex items-center justify-center bg-primary text-on-primary px-6 py-2.5 rounded-md font-label text-sm font-semibold tracking-wide hover:opacity-90 transition-opacity">
         {{ __('Sign In') }}
     </a>
@@ -132,7 +128,7 @@
                         </a>
     @endif
 @else
-    @if (Route::has('register'))
+    @if (\Illuminate\Support\Facades\Route::has('register'))
         <a href="{{ route('register') }}" class="inline-flex items-center justify-center bg-gradient-to-r from-primary to-primary-container text-on-primary px-8 py-4 rounded-md font-label text-sm font-bold tracking-widest uppercase hover:opacity-90 transition-all">
                             {{ __('Submit Manuscript') }}
                         </a>
@@ -142,11 +138,6 @@
                         </a>
     @endif
 @endauth
-@if (Route::has('register'))
-<a href="{{ route('register') }}" class="inline-flex items-center justify-center border border-outline/20 text-primary px-8 py-4 rounded-md font-label text-sm font-bold tracking-widest uppercase hover:bg-surface-container transition-all">
-                            {{ __('Join Reviewer Board') }}
-                        </a>
-@endif
 </div>
 </div>
 <div class="md:col-span-5 relative">
@@ -196,135 +187,51 @@
 </div>
 </section>
 <!-- Latest Published Research -->
-<section class="py-32 px-8 max-w-7xl mx-auto">
+<section id="published-research" class="scroll-mt-28 py-32 px-8 max-w-7xl mx-auto">
 <div class="mb-20 text-center">
 <span class="font-label text-xs uppercase tracking-[0.3em] text-secondary">In Circulation Now</span>
 <h2 class="font-headline text-5xl text-primary mt-4">Latest Published Research</h2>
 </div>
+@php
+    $pubIcons = ['description', 'biotech', 'eco', 'psychology', 'menu_book', 'globe'];
+@endphp
 <div class="space-y-1 w-full">
-<!-- Research Card 1 -->
+@forelse ($publishedDocuments as $document)
 <article class="group relative py-12 px-4 hover:bg-surface-container-low transition-colors duration-500 flex flex-col md:flex-row gap-8 items-start">
 <div class="w-16 h-16 bg-surface-container flex items-center justify-center rounded-lg group-hover:bg-primary transition-colors">
-<span class="material-symbols-outlined text-primary group-hover:text-white">description</span>
+<span class="material-symbols-outlined text-primary group-hover:text-white">{{ $pubIcons[$loop->index % count($pubIcons)] }}</span>
 </div>
 <div class="flex-1 space-y-4">
 <div class="flex items-center gap-4">
-<span class="font-label text-[10px] text-secondary font-bold tracking-widest uppercase">Biotechnology</span>
+<span class="font-label text-[10px] text-secondary font-bold tracking-widest uppercase">{{ __('Published') }}</span>
 <span class="text-outline-variant">•</span>
-<span class="font-label text-[10px] text-secondary font-bold tracking-widest uppercase">Dec 2024</span>
+<time class="font-label text-[10px] text-secondary font-bold tracking-widest uppercase" datetime="{{ $document->published_at?->toIso8601String() }}">{{ $document->published_at?->format('M Y') }}</time>
 </div>
-<h3 class="font-headline text-3xl text-primary group-hover:text-on-primary-fixed-variant transition-colors cursor-pointer">
-                            Neural Synthetic Mapping: A New Paradigm for Cognitive Data Restoration
+<h3 class="font-headline text-3xl text-primary group-hover:text-on-primary-fixed-variant transition-colors">
+<a href="{{ route('published.show', $document) }}" class="focus:outline-none focus:ring-2 focus:ring-primary rounded-sm">{{ $document->title }}</a>
                         </h3>
 <p class="font-body text-on-surface-variant max-w-3xl leading-relaxed">
-                            An investigation into the restorative capabilities of synthetic neural clusters when applied to degenerative mapping sequences...
+                            {{ \Illuminate\Support\Str::limit(strip_tags($document->abstract), 260) }}
                         </p>
 <div class="flex items-center gap-6 pt-2">
 <div class="flex items-center gap-2">
-<div class="w-6 h-6 rounded-full bg-slate-200 overflow-hidden">
-<img alt="Author Portrait" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAw2hLaYquGljOT4IiTtg7SmnZI82uxtDyZdNBQithOj5W9KkzLmeXk4yhMy4h0-_e7iURq7FIw-kkieChWxsVEo1xJYAO2uoCVtdU7KODhaHCeGLfduA7xLL0bGknDA0oyfiZIgsRbIF6d-0R81Raex2yfndWMKgNDt5Eg9FkHJNkm0s4tNgilUDsOvaoD6BDT5hC1K_9M6xfN2CwNrlVNj2R4fuudHGrTC1Aa3T0sNxPht-rgrA_niY6hJTepTT-FWSML0XwsN7KS"/>
+<div class="w-6 h-6 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm">person</span>
 </div>
-<span class="font-label text-xs text-primary font-semibold">Dr. Sarah Chen et al.</span>
+<span class="font-label text-xs text-primary font-semibold">{{ $document->user->name }}</span>
 </div>
-<span class="text-xs font-label text-outline">12 Citations</span>
 </div>
 </div>
 <div class="md:self-center">
-<button type="button" class="material-symbols-outlined text-primary-container p-4 border border-outline-variant/30 rounded-full hover:bg-primary hover:text-white transition-all" aria-label="{{ __('Read more') }}">
+<a href="{{ route('published.show', $document) }}" class="inline-flex material-symbols-outlined text-primary-container p-4 border border-outline-variant/30 rounded-full hover:bg-primary hover:text-white transition-all no-underline" aria-label="{{ __('Read more') }}">
                             arrow_forward
-                        </button>
+                        </a>
 </div>
 <div class="absolute bottom-0 left-4 right-4 h-px bg-outline-variant/10"></div>
 </article>
-<!-- Research Card 2 -->
-<article class="group relative py-12 px-4 hover:bg-surface-container-low transition-colors duration-500 flex flex-col md:flex-row gap-8 items-start">
-<div class="w-16 h-16 bg-surface-container flex items-center justify-center rounded-lg group-hover:bg-primary transition-colors">
-<span class="material-symbols-outlined text-primary group-hover:text-white">biotech</span>
-</div>
-<div class="flex-1 space-y-4">
-<div class="flex items-center gap-4">
-<span class="font-label text-[10px] text-secondary font-bold tracking-widest uppercase">Quantum Physics</span>
-<span class="text-outline-variant">•</span>
-<span class="font-label text-[10px] text-secondary font-bold tracking-widest uppercase">Nov 2024</span>
-</div>
-<h3 class="font-headline text-3xl text-primary group-hover:text-on-primary-fixed-variant transition-colors cursor-pointer">
-                            Observations on Entanglement Decoherence in Sub-Zero Pressurized Environments
-                        </h3>
-<p class="font-body text-on-surface-variant max-w-3xl leading-relaxed">
-                            This paper presents empirical evidence regarding the stabilization of quantum states under extreme gravitational and thermal conditions...
-                        </p>
-<div class="flex items-center gap-6 pt-2">
-<div class="flex items-center gap-2">
-<div class="w-6 h-6 rounded-full bg-slate-200 overflow-hidden">
-<img alt="Author Portrait" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAucM4olz_WW5PN5acr3Wp5jHN61tMwQKLQX8-uVbs2m9jVLFsFfflJe6jPBGmNvVaSIg9YEZTxO16BoagyAyx0hPCO8Yjoa99bMCX2e6YZ45ymy4ylCUTJrSyrBtrndgfEbUtrjykq-MQnxaW3-0Pxf5swXvF88DHVW9nEsAmkia-auJ_7p3NXBMWDcZVpQIV1LRWAUZWTtUUhCN_o-IEYNE_J2ivZ6qoCzo7w-9VyggMoGMizs1noidI-kniuC1a0YmJcTXmW0Z0W"/>
-</div>
-<span class="font-label text-xs text-primary font-semibold">Prof. Julian Vane</span>
-</div>
-<span class="text-xs font-label text-outline">42 Citations</span>
-</div>
-</div>
-<div class="md:self-center">
-<button type="button" class="material-symbols-outlined text-primary-container p-4 border border-outline-variant/30 rounded-full hover:bg-primary hover:text-white transition-all" aria-label="{{ __('Read more') }}">
-                            arrow_forward
-                        </button>
-</div>
-<div class="absolute bottom-0 left-4 right-4 h-px bg-outline-variant/10"></div>
-</article>
-<!-- Research Card 3 -->
-<article class="group relative py-12 px-4 hover:bg-surface-container-low transition-colors duration-500 flex flex-col md:flex-row gap-8 items-start">
-<div class="w-16 h-16 bg-surface-container flex items-center justify-center rounded-lg group-hover:bg-primary transition-colors">
-<span class="material-symbols-outlined text-primary group-hover:text-white">eco</span>
-</div>
-<div class="flex-1 space-y-4">
-<div class="flex items-center gap-4">
-<span class="font-label text-[10px] text-secondary font-bold tracking-widest uppercase">Climate Science</span>
-<span class="text-outline-variant">•</span>
-<span class="font-label text-[10px] text-secondary font-bold tracking-widest uppercase">Nov 2024</span>
-</div>
-<h3 class="font-headline text-3xl text-primary group-hover:text-on-primary-fixed-variant transition-colors cursor-pointer">
-                            Oceanic Salinity Fluctuations and the Resilience of Coastal Microbiomes
-                        </h3>
-<p class="font-body text-on-surface-variant max-w-3xl leading-relaxed">
-                            A longitudinal study tracking microbial adaptation in the North Atlantic over a period of fifteen years...
-                        </p>
-<div class="flex items-center gap-6 pt-2">
-<div class="flex items-center gap-2">
-<div class="w-6 h-6 rounded-full bg-slate-200 overflow-hidden">
-<img alt="Author Portrait" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCG6h_iKFaCOM8vgBvvkrEGwY4wi0v-Je4dSTJfEp1EcVOJfSzwMsZRcP-VrgrgD6XQE61B_5O_pKTMGG_dIY-1inuwiF7qOFkLg2c4ybXI-GGbzWqfTvVHet6i5jhy_6k-_6XJEBFm2o-W_QnVLVltw4EqmYqo4wlZweM6yL0mplbrsC-bdG8C6Czf14ILB-pMYFnXSm7ZJATYkN2sHD5ee_7Pp13vMlLpVr9bxg1DDd3SKnyPU302KwG5UacdFNZNKtObxbT411YY"/>
-</div>
-<span class="font-label text-xs text-primary font-semibold">Dr. Elena Rodriguez</span>
-</div>
-<span class="text-xs font-label text-outline">8 Citations</span>
-</div>
-</div>
-<div class="md:self-center">
-<button type="button" class="material-symbols-outlined text-primary-container p-4 border border-outline-variant/30 rounded-full hover:bg-primary hover:text-white transition-all" aria-label="{{ __('Read more') }}">
-                            arrow_forward
-                        </button>
-</div>
-</article>
-</div>
-<div class="mt-16 text-center">
-<button type="button" class="font-label text-sm font-bold tracking-widest text-primary border-b-2 border-primary pb-1 hover:text-secondary-container transition-all">
-                    VIEW ALL PUBLISHED RESEARCH
-                </button>
-</div>
-</section>
-<!-- Newsletter Sub-Hero -->
-<section class="mb-32 px-8">
-<div class="max-w-5xl mx-auto bg-primary-container rounded-2xl p-12 md:p-20 text-center relative overflow-hidden">
-<div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32"></div>
-<div class="relative z-10 space-y-8">
-<h2 class="font-headline text-4xl text-on-primary italic">Keep the pulse of discovery.</h2>
-<p class="text-on-primary-container text-lg font-body max-w-xl mx-auto">Receive our weekly curation of the most significant peer-reviewed papers directly in your inbox.</p>
-<form class="flex flex-col md:flex-row gap-4 max-w-lg mx-auto" action="#" method="post" onsubmit="return false;">
-@csrf
-<input class="flex-1 bg-white/10 border-white/20 text-white placeholder:text-white/40 rounded-md px-6 py-4 focus:ring-1 focus:ring-white/50 outline-none font-body" placeholder="Your academic email" type="email" name="email" autocomplete="email"/>
-<button type="button" class="bg-primary-fixed text-on-primary-fixed font-label font-bold text-xs tracking-widest uppercase px-8 py-4 rounded-md hover:bg-white transition-colors">
-                            Subscribe
-                        </button>
-</form>
-</div>
+@empty
+<p class="font-body text-center text-on-surface-variant py-16 max-w-xl mx-auto">{{ __('Published works will appear here once the editorial team releases them.') }}</p>
+@endforelse
 </div>
 </section>
 </main>
@@ -334,12 +241,6 @@
 <div class="space-y-2">
 <div class="font-serif italic text-lg text-primary">The Editorial Scholar</div>
 <p class="font-sans text-sm tracking-normal text-slate-500">© {{ date('Y') }} The Editorial Scholar. Peer-reviewed excellence.</p>
-</div>
-<div class="flex gap-10 flex-wrap justify-center">
-<a class="font-sans text-sm tracking-normal text-slate-500 hover:text-blue-900 transition-opacity" href="#">Privacy Policy</a>
-<a class="font-sans text-sm tracking-normal text-slate-500 hover:text-blue-900 transition-opacity" href="#">Terms of Service</a>
-<a class="font-sans text-sm tracking-normal text-slate-500 hover:text-blue-900 transition-opacity" href="#">Open Access Policy</a>
-<a class="font-sans text-sm tracking-normal text-slate-500 hover:text-blue-900 transition-opacity" href="#">Contact</a>
 </div>
 </div>
 </footer>

@@ -194,11 +194,6 @@
 <div class="text-xs font-sans tracking-wide uppercase text-slate-400 dark:text-slate-600">
             © {{ date('Y') }} The Editorial Scholar. {{ __('All rights reserved.') }}
         </div>
-<div class="flex gap-8 flex-wrap justify-center">
-<a class="text-xs font-sans tracking-wide uppercase text-slate-400 dark:text-slate-600 hover:text-blue-600 dark:hover:text-blue-400 underline underline-offset-4 transition-colors" href="#">{{ __('Privacy Policy') }}</a>
-<a class="text-xs font-sans tracking-wide uppercase text-slate-400 dark:text-slate-600 hover:text-blue-600 dark:hover:text-blue-400 underline underline-offset-4 transition-colors" href="#">{{ __('Terms of Service') }}</a>
-<a class="text-xs font-sans tracking-wide uppercase text-slate-400 dark:text-slate-600 hover:text-blue-600 dark:hover:text-blue-400 underline underline-offset-4 transition-colors" href="#">{{ __('Contact Support') }}</a>
-</div>
 </footer>
 </body>
 </html>

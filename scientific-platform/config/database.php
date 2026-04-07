@@ -1,6 +1,25 @@
 <?php
 
 use Illuminate\Support\Str;
+use Pdo\Mysql;
+
+if (! function_exists('pdo_mysql_ssl_ca_attr')) {
+    /**
+     * PDO MYSQL SSL CA attribute compatible with PHP 8.5+ (Pdo\Mysql::ATTR_SSL_CA).
+     */
+    function pdo_mysql_ssl_ca_attr(): ?int
+    {
+        if (class_exists(Mysql::class)) {
+            return Mysql::ATTR_SSL_CA;
+        }
+
+        if (PHP_VERSION_ID < 80500) {
+            return PDO::MYSQL_ATTR_SSL_CA;
+        }
+
+        return null;
+    }
+}
 
 return [
 
@@ -54,9 +73,11 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+            'options' => extension_loaded('pdo_mysql') ? array_filter(
+                ($attr = pdo_mysql_ssl_ca_attr()) !== null
+                    ? [$attr => env('MYSQL_ATTR_SSL_CA')]
+                    : []
+            ) : [],
         ],
 
         'mariadb' => [
@@ -74,9 +95,11 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+            'options' => extension_loaded('pdo_mysql') ? array_filter(
+                ($attr = pdo_mysql_ssl_ca_attr()) !== null
+                    ? [$attr => env('MYSQL_ATTR_SSL_CA')]
+                    : []
+            ) : [],
         ],
 
         'pgsql' => [

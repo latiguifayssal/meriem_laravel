@@ -117,7 +117,7 @@
 <div class="space-y-2">
 <div class="flex justify-between items-end">
 <label class="font-label text-[0.7rem] uppercase tracking-wider text-secondary" for="password">{{ __('Password') }}</label>
-@if (Route::has('password.request'))
+@if (\Illuminate\Support\Facades\Route::has('password.request'))
 <a class="text-[0.75rem] font-label text-primary hover:underline underline-offset-4 transition-all" href="{{ route('password.request') }}">{{ __('Forgot password?') }}</a>
 @endif
 </div>
@@ -146,7 +146,7 @@
 </div>
 </div>
 <!-- Secondary Action -->
-@if (Route::has('register'))
+@if (\Illuminate\Support\Facades\Route::has('register'))
 <div class="text-center">
 <p class="text-sm text-secondary font-body">{{ __('New to the journal?') }}</p>
 <a href="{{ route('register') }}" class="mt-4 inline-flex w-full justify-center items-center py-3 border border-outline-variant/30 text-primary font-label text-xs uppercase tracking-widest rounded-md hover:bg-surface-container-low transition-colors duration-200">
@@ -172,12 +172,6 @@
 <div class="text-slate-400 font-sans text-xs tracking-wide uppercase">
             © {{ date('Y') }} The Editorial Scholar. {{ __('All rights reserved.') }}
         </div>
-<nav class="flex flex-wrap justify-center gap-8">
-<a class="text-slate-400 font-sans text-xs tracking-wide uppercase hover:text-blue-600 underline underline-offset-4 transition-all duration-300" href="#">{{ __('Privacy Policy') }}</a>
-<a class="text-slate-400 font-sans text-xs tracking-wide uppercase hover:text-blue-600 underline underline-offset-4 transition-all duration-300" href="#">{{ __('Terms of Service') }}</a>
-<a class="text-slate-400 font-sans text-xs tracking-wide uppercase hover:text-blue-600 underline underline-offset-4 transition-all duration-300" href="#">{{ __('Institutional Access') }}</a>
-<a class="text-slate-400 font-sans text-xs tracking-wide uppercase hover:text-blue-600 underline underline-offset-4 transition-all duration-300" href="#">{{ __('Contact Support') }}</a>
-</nav>
 </footer>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 shadow-sm backdrop-blur-md supports-[backdrop-filter]:bg-white/80">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -15,12 +15,15 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    @if (Auth::user()->isAdmin())
-                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                    @if (auth()->user()?->isAdmin())
+                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                             {{ __('Admin') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.documents.index')" :active="request()->routeIs('admin.documents.*')">
+                            {{ __('Documents') }}
+                        </x-nav-link>
                     @endif
-                    @if (Auth::user()->isAuthor())
+                    @if (auth()->user()?->isAuthor())
                         <x-nav-link :href="route('author.dashboard')" :active="request()->routeIs('author.dashboard')">
                             {{ __('Author') }}
                         </x-nav-link>
@@ -28,9 +31,12 @@
                             {{ __('Documents') }}
                         </x-nav-link>
                     @endif
-                    @if (Auth::user()->isReviewer())
-                        <x-nav-link :href="route('reviewer.dashboard')" :active="request()->routeIs('reviewer.*')">
+                    @if (auth()->user()?->isReviewer())
+                        <x-nav-link :href="route('reviewer.dashboard')" :active="request()->routeIs('reviewer.dashboard')">
                             {{ __('Reviewer') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('reviewer.documents.index')" :active="request()->routeIs('reviewer.documents.*')">
+                            {{ __('Documents') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -40,8 +46,8 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+                        <button class="inline-flex items-center px-3 py-2 border border-slate-200 text-sm leading-4 font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 hover:border-slate-300 focus:outline-none transition ease-in-out duration-150">
+                            <div>{{ auth()->user()->name }}</div>
 
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -88,12 +94,15 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            @if (Auth::user()->isAdmin())
-                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+            @if (auth()->user()?->isAdmin())
+                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                     {{ __('Admin') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.documents.index')" :active="request()->routeIs('admin.documents.*')">
+                    {{ __('Documents') }}
+                </x-responsive-nav-link>
             @endif
-            @if (Auth::user()->isAuthor())
+            @if (auth()->user()?->isAuthor())
                 <x-responsive-nav-link :href="route('author.dashboard')" :active="request()->routeIs('author.dashboard')">
                     {{ __('Author') }}
                 </x-responsive-nav-link>
@@ -101,9 +110,12 @@
                     {{ __('Documents') }}
                 </x-responsive-nav-link>
             @endif
-            @if (Auth::user()->isReviewer())
-                <x-responsive-nav-link :href="route('reviewer.dashboard')" :active="request()->routeIs('reviewer.*')">
+            @if (auth()->user()?->isReviewer())
+                <x-responsive-nav-link :href="route('reviewer.dashboard')" :active="request()->routeIs('reviewer.dashboard')">
                     {{ __('Reviewer') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('reviewer.documents.index')" :active="request()->routeIs('reviewer.documents.*')">
+                    {{ __('Documents') }}
                 </x-responsive-nav-link>
             @endif
         </div>
@@ -111,8 +123,8 @@
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-base text-gray-800">{{ auth()->user()->name }}</div>
+                <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
             </div>
 
             <div class="mt-3 space-y-1">
