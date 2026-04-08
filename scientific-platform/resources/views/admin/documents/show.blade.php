@@ -40,7 +40,7 @@
                         @if ($document->file_path)
                             <div class="mt-6 rounded-xl border border-slate-100 bg-slate-50 p-4">
                                 <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ __('File') }}</p>
-                                <a href="{{ asset('storage/'.$document->file_path) }}" class="mt-2 inline-flex text-sm font-semibold text-violet-700 hover:text-violet-900" target="_blank" rel="noopener">{{ basename($document->file_path) }}</a>
+                                <a href="{{ route('documents.file', $document) }}" class="mt-2 inline-flex text-sm font-semibold text-violet-700 hover:text-violet-900" target="_blank" rel="noopener">{{ basename($document->file_path) }}</a>
                             </div>
                         @endif
                     </section>

@@ -46,7 +46,7 @@
                         @if ($document->file_path)
                             <p class="text-sm text-slate-600">
                                 {{ __('Current file:') }}
-                                <a href="{{ asset('storage/'.$document->file_path) }}" class="font-semibold text-sky-700 hover:text-sky-800" target="_blank" rel="noopener">{{ basename($document->file_path) }}</a>
+                                <a href="{{ route('documents.file', $document) }}" class="font-semibold text-sky-700 hover:text-sky-800" target="_blank" rel="noopener">{{ basename($document->file_path) }}</a>
                             </p>
                         @endif
                         <div>

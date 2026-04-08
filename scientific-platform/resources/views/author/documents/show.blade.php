@@ -38,7 +38,7 @@
                         @if ($document->file_path)
                             <div class="mt-8 rounded-xl border border-slate-100 bg-slate-50 p-4">
                                 <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ __('Attachment') }}</p>
-                                <a href="{{ asset('storage/'.$document->file_path) }}" class="mt-2 inline-flex text-sm font-semibold text-sky-700 hover:text-sky-800" target="_blank" rel="noopener">{{ basename($document->file_path) }}</a>
+                                <a href="{{ route('documents.file', $document) }}" class="mt-2 inline-flex text-sm font-semibold text-sky-700 hover:text-sky-800" target="_blank" rel="noopener">{{ basename($document->file_path) }}</a>
                             </div>
                         @endif
                     </section>

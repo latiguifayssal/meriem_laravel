@@ -40,7 +40,7 @@
         <p class="text-slate-700 leading-relaxed whitespace-pre-wrap">{{ $document->abstract }}</p>
         @if ($document->file_path)
             <p class="mt-8">
-                <a href="{{ asset('storage/'.$document->file_path) }}" class="text-blue-900 font-medium underline hover:no-underline" target="_blank" rel="noopener">{{ __('Download manuscript file') }}</a>
+                <a href="{{ route('documents.file', $document) }}" class="text-blue-900 font-medium underline hover:no-underline" target="_blank" rel="noopener">{{ __('Download manuscript file') }}</a>
             </p>
         @endif
     </div>

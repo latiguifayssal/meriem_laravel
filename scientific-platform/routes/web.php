@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\DocumentController as AdminDocumentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\DocumentFileController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublishedDocumentController;
 use App\Http\Controllers\Reviewer\DocumentController as ReviewerDocumentController;
@@ -24,6 +25,9 @@ Route::get('/', function () {
 
 Route::get('/published/{document}', [PublishedDocumentController::class, 'show'])
     ->name('published.show');
+
+Route::get('/documents/{document}/file', [DocumentFileController::class, 'show'])
+    ->name('documents.file');
 
 Route::get('/dashboard', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
 
